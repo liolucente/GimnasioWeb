@@ -1,0 +1,114 @@
+create database gimnasio;
+
+
+
+use gimnasio;
+
+/* TABLA DE ABONOS*/
+CREATE TABLE abonos(
+	abono_idreg int unsigned not null auto_increment,
+    abono_dniPersona int unsigned not null,
+    abono_itemDisciplina int unsigned not null,
+    abono_importe float not null,
+    abono_periododesde date not null,
+    abono_periodohasta date not null,
+    primary key (abono_idreg)
+);
+
+/* TABLA DE PERSONAS*/
+
+create table personas
+(
+pers_idreg int unsigned not null auto_increment,
+pers_nombre varchar(80) null,
+pers_apellido varchar(80) null,
+pers_dni int unsigned,
+pers_email varchar(80) null,
+primary key (pers_idreg)
+);
+
+/* TABLA DE PROFESORES*/
+
+create table profesores (
+profe_idreg int unsigned not null auto_increment,
+profe_nombre varchar(30) null,
+profe_apellido varchar(30) null,
+profe_dni int null,
+profe_email varchar(60) null,
+primary key (profe_idreg)
+);
+
+/* TABLA DE RELACIONES ENTRE LAS DISCIPLINAS Y LOS PROFESORES*/
+
+create table profesores_disciplinas(
+	profdis_idreg int unsigned not null auto_increment,
+    profdis_idProfe int unsigned not null,
+    profdis_itemdisciplina int unsigned not null,
+    primary key (profdis_idreg),
+	foreign key (profdis_idProfe) references profesores(profe_idreg)    
+);
+
+/* TABLA DE REFERENCIAS INTERNAS DEL SISTEMA*/
+
+CREATE TABLE refer_internas(
+	inte_idreg int unsigned not null auto_increment,
+	inte_codigo int null,
+	inte_item int unsigned not null,
+	inte_texto varchar(100) null,
+	inte_referencia varchar(100) null,
+    primary key (inte_idreg)    
+); 
+
+/* VISTA DE PROFESORES Y DISCIPLINAS QUE EJECUTA*/
+
+create view datos_profesores_disciplinas 
+as 
+select 
+IFNULL(profdis_idreg,0) as profdis_idreg,
+IFNULL(profdis_idProfe,0) as profdis_idProfe,
+IFNULL(profe_nombre,'') as profe_nombre,
+IFNULL(profdis_itemdisciplina,0) as profdis_itemdisciplina,
+IFNULL(disciplinas.inte_texto,'') as descripcion_disciplina
+from profesores_disciplinas
+left join profesores on profdis_idProfe = profe_idreg
+left join refer_internas disciplinas on profdis_itemdisciplina = disciplinas.inte_item and disciplinas.inte_codigo = 2 and disciplinas.inte_item > 0;
+
+
+/* VISTA DE DISCIPLINAS*/
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `gimnasio`.`disciplinas` AS select `gimnasio`.`refer_internas`.`inte_idreg` AS `inte_idreg`,`gimnasio`.`refer_internas`.`inte_codigo` AS `inte_codigo`,`gimnasio`.`refer_internas`.`inte_item` AS `inte_item`,`gimnasio`.`refer_internas`.`inte_texto` AS `inte_texto`,`gimnasio`.`refer_internas`.`inte_referencia` AS `inte_referencia` from `gimnasio`.`refer_internas` where ((`gimnasio`.`refer_internas`.`inte_codigo` = 2) and (`gimnasio`.`refer_internas`.`inte_item` > 0));
+
+
+/* VISTA DE VENCIMIENTOS DE ABONOS*/
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `gimnasio`.`vencimientos_abonos` AS select ifnull(`gimnasio`.`refer_internas`.`inte_texto`,'') AS `disciplina`,ifnull(`gimnasio`.`abonos`.`abono_dniPersona`,0) AS `abono_dniPersona`,concat(ltrim(rtrim(`gimnasio`.`personas`.`pers_apellido`)),' ',ltrim(rtrim(`gimnasio`.`personas`.`pers_nombre`))) AS `afiliado`,ifnull(`gimnasio`.`abonos`.`abono_importe`,0.00) AS `abono_importe`,ifnull(`gimnasio`.`abonos`.`abono_periododesde`,'1900-01-01') AS `abono_periododesde`,ifnull(`gimnasio`.`abonos`.`abono_periodohasta`,'1900-01-01') AS `abono_periodohasta` from ((`gimnasio`.`abonos` join `gimnasio`.`personas` on((`gimnasio`.`abonos`.`abono_dniPersona` = `gimnasio`.`personas`.`pers_dni`))) join `gimnasio`.`refer_internas` on(((`gimnasio`.`abonos`.`abono_itemDisciplina` = `gimnasio`.`refer_internas`.`inte_item`) and (`gimnasio`.`refer_internas`.`inte_codigo` = 2) and (`gimnasio`.`refer_internas`.`inte_item` > 0))));
+
+
+insert into refer_internas values (null,2,0,'Tabla referencia Disciplinas','Referencia Disciplinas');
+insert into refer_internas values (null,2,1,'Calistenia','Referencia Disciplinas');
+
+insert into refer_internas values (null,2,2,'Yoga','Referencia Disciplinas');
+
+insert into refer_internas values (null,2,3,'Boxeo','Referencia Disciplinas');
+
+insert into profesores values (null,'UTN','UTN',12345678,'utn@gmail.com.ar');
+
+insert into profesores values (null,'Alejandro','Lucente',12345678,'lio.lucente@yahoo.com.ar');
+
+
+insert into profesores_disciplinas values (null,1,1);
+
+insert into profesores_disciplinas values (null,1,2);
+
+insert into profesores_disciplinas values (null,1,3);
+
+insert into profesores_disciplinas values (null,2,1);
+
+insert into profesores_disciplinas values (null,2,3);
+
+
+
+insert into personas values (null,'Alejandro','Lucente',12345678,'lio.lucente@yahoo.com.ar');
+
+insert into personas values (null,'Claudio','Paul',12345678,'unMail@yahoo.com.ar');
+
+insert into personas values (null,'Michael','Jordan',12345678,'otroMail@yahoo.com.ar');

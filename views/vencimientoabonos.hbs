@@ -1,0 +1,31 @@
+<div class="container">
+    <div class="text-center m-5">
+        <hr>
+        <h1>{{titulo}}</h1>
+        <hr>
+    </div>
+    <table class="table table-striped" id="tablaVtoAbonos">
+        <thead>
+            <tr>
+                <th>Disciplina</th>
+                <th>Dni Afiliado</th>
+                <th>Nombre Afiliado</th>
+                <th>Importe</th>
+                <th>Periodo Desde</th>
+                <th>Periodo Hasta</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each results}}
+            <tr>
+                <td> {{ disciplina}}</td>
+                <td> {{ abono_dniPersona}}</td>
+                <td> {{ afiliado}}</td>
+                <td> {{ abono_importe}}</td>
+                <td> {{ abono_periododesde}}</td>
+                <td> {{ abono_periodohasta}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>

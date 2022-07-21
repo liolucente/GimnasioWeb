@@ -1,0 +1,36 @@
+<div class="container">
+    <div class="text-center m-5">
+        <hr>
+        <h1>{{titulo}}</h1>
+        <hr>
+    </div>
+    <div class="row">
+        <form action="./afiliados" method="post">
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Nombre</label>
+                <input type="text" class="form-control" name="nombre" placeholder="Nombre">
+            </div>
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Apellido</label>
+                <input type="text" class="form-control" name="apellido" placeholder="Apellido">
+            </div>
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Dni</label>
+                <input type="number" class="form-control" name="dni" placeholder="Dni">
+            </div>
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Email</label>
+                <input type="email" class="form-control" name="email" placeholder="Email">
+            </div>
+
+            <div class="mb-3 text-center">
+                <input type="submit" class="button btn-primary w-50 p-2" value="Enviar Datos">
+            </div>
+        </form>
+        <div class="text-center validacion">
+            <h2 class="text-danger">
+                {{validacion}}
+            </h2>
+        </div>
+    </div>
+</div>

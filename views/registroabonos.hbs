@@ -1,0 +1,48 @@
+<div class="container">
+    <div class="text-center m-5">
+        <hr>
+        <h1>{{titulo}}</h1>
+        <hr>
+    </div>
+
+    <div class="row">
+        <form action="./registroabonos" method="post">
+
+                <input type="number" id="dni" class="form-control mb-3" name="dni" placeholder="Dni" required>
+                <input type="hidden" class="form-control" name="pers_idreg">
+
+                <input type="text" class="form-control mb-3" name="nombre" placeholder="Nombre">
+
+                <input type="text" class="form-control mb-3" name="apellido" placeholder="Apellido">
+
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="inputGroupSelect01">Disciplina</label>
+                    <select class="form-control" id="inputGroupSelect01" name="disciplina">
+                        {{#each results}}
+                            <option name="disciplina" value={{ inte_item}}>{{ inte_texto}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+
+                <input type="number" class="form-control mb-3" name="importe" placeholder="Importe" required>
+                
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="inputGroupSelect01">Fecha de pago</label>
+                    <input type="date" class="form-control" name="fecha" placeholder="Fecha" id="fechapago" required>
+                </div>
+                
+                <div class="mb-3 text-center">
+                    <input type="submit" class="button btn-primary w-50 p-2" value="Agregar">
+                </div>
+        </form>
+    </div>
+
+    <div class="text-center validacion">
+        <h2 class="text-danger">
+            {{validacion}}
+        </h2>
+    </div>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="/assets/jquery-3.3.1.js"></script>

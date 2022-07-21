@@ -1,0 +1,116 @@
+<div class="container">
+    <div class="text-center m-5">
+        <hr>
+        <h1>{{titulo}}</h1>
+        <hr>
+    </div>
+    <table class="table table-striped" id="mytable">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Dni</th>
+                <th>Email</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each results}}
+            <tr>
+                <td> {{ profe_nombre}}</td>
+                <td> {{ profe_apellido}}</td>
+                <td> {{ profe_dni}}</td>
+                <td> {{ profe_email}}</td>
+                <td>
+                    <a href="javascript:void(0);" class="btn btn-info edit" data-id="{{ profe_idreg}}" data-profe_nombre="{{ profe_nombre}}" data-profe_apellido="{{ profe_apellido}}" data-profe_dni="{{ profe_dni}}" data-profe_email="{{ profe_email}}">Editar</a>    
+                    <a href="javascript:void(0);" class="btn btn-danger delete" data-id="{{ profe_idreg}}">Borrar</a>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+
+{{!-- AÑADIR Modal --}}
+{{!-- /EDITAR  --}}
+<form action="/profesoresUpdate" method="post">
+    <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"> Editar Datos </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" data-bs-target="#my-modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">               
+                    <div class="form-group mt-3">
+                        <input type="text" name="profe_nombre" class=" form-control nombre" placeholder="Nombre" required>
+                    </div>
+                    <div class="form-group mt-3">
+                        <input type="text" name="profe_apellido" class=" form-control apellido" placeholder="Apellido" required>
+                    </div>
+                    <div class="form-group mt-3">
+                        <input type="text" name="profe_dni" class=" form-control dni" placeholder="Dni" required>
+                    </div>
+                    <div class="form-group mt-3">
+                        <input type="text" name="profe_email" class=" form-control email" placeholder="Email" required>
+                    </div>
+                    <div class="modal-footer mt-3">
+                        <input type="hidden" name="profe_idreg" class="profe_idreg" required>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" data-bs-target="#my-modal" aria-label="Close"></button>
+                        <button type="submit" class="btn btn-primary">Actualizar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+{{!-- Modal delete --}}
+<form id="add-row-form" action="/profesoresDelete" method="post">
+    <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Eliminar Datos</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" data-bs-target="#my-modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <strong>¿Estás seguro que desea eliminar este registro?</strong>
+            </div>
+            <div class="modal-footer">
+            <input type="hidden" name="profe_idreg" class="form-control profe_idreg2" required>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" data-bs-target="#my-modal" aria-label="Close"></button>
+                <button type="submit" class="btn btn-success">Eliminar</button>
+            </div>
+                </div>
+        </div>
+    </div>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="/assets/jquery-3.3.1.js"></script>
+
+<script>
+$(document).ready(function(){
+    //Mostrar datos al modal para editar registro
+    $('#mytable').on('click', '.edit', function(){
+        let profe_idreg = $(this).data('id');
+        let profe_nombre = $(this).data('profe_nombre');
+        let profe_apellido = $(this).data('profe_apellido');
+        let profe_dni = $(this).data('profe_dni');
+        let profe_email = $(this).data('profe_email');
+        $('#EditModal').modal('show');
+        $('.nombre').val(profe_nombre);
+        $('.apellido').val(profe_apellido);
+        $('.dni').val(profe_dni);
+        $('.email').val(profe_email);
+        $('.profe_idreg').val(profe_idreg);
+    })
+    // Modal DELETE     
+    $('#mytable').on('click', '.delete', function(){
+        let profe_idreg = $(this).data('id');
+        $('#DeleteModal').modal('show');
+        $('.profe_idreg2').val(profe_idreg);
+    })
+})
+</script>

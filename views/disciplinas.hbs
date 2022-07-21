@@ -1,0 +1,27 @@
+<div class="container">
+    <div class="text-center m-5">
+        <hr>
+        <h1>{{titulo}}</h1>
+        <hr>
+    </div>
+    <div class="row">
+        <form action="./disciplinas" method="post">
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Nro. Item</label>
+                <input type="number" class="form-control item" name="item" placeholder="Item">                
+            </div>
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Texto</label>
+                <input type="text" class="form-control texto" name="texto" placeholder="Texto">
+            </div>
+            <div class="mb-3 text-center">
+                <input type="submit" class="button btn-primary w-50 p-2" value="Enviar Datos">
+            </div>
+        </form>
+        <div class="text-center validacion">
+            <h2 class="text-danger">
+                {{validacion}}
+            </h2>
+        </div>
+    </div>
+</div>

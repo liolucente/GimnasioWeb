@@ -1,0 +1,116 @@
+<div class="container">
+    <div class="text-center m-5">
+        <hr>
+        <h1>{{titulo}}</h1>
+        <hr>
+    </div>
+    <table class="table table-striped" id="mytable">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Dni</th>
+                <th>Email</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each results}}
+            <tr>
+                <td> {{ pers_nombre}}</td>
+                <td> {{ pers_apellido}}</td>
+                <td> {{ pers_dni}}</td>
+                <td> {{ pers_email}}</td>
+                <td>
+                    <a href="javascript:void(0);" class="btn btn-info edit" data-id="{{ pers_idreg}}" data-pers-nombre="{{ pers_nombre}}" data-pers-apellido="{{ pers_apellido}}" data-pers-dni="{{ pers_dni}}" data-pers-email="{{ pers_email}}">Editar</a>    
+                    <a href="javascript:void(0);" class="btn btn-danger delete" data-id="{{ pers_idreg}}">Borrar</a>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+
+{{!-- AÑADIR Modal --}}
+{{!-- /EDITAR  --}}
+<form action="/personasUpdate" method="post">
+    <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"> Editar Afiliado </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" data-bs-target="#my-modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">               
+                    <div class="form-group mt-3">
+                        <input type="text" name="pers_nombre" class=" form-control pers_nombre" placeholder="Nombre" required>
+                    </div>
+                    <div class="form-group mt-3">
+                        <input type="text" name="pers_apellido" class=" form-control pers_apellido" placeholder="Apellido" required>
+                    </div>
+                    <div class="form-group mt-3">
+                        <input type="text" name="pers_dni" class=" form-control pers_dni" placeholder="Dni" required>
+                    </div>
+                    <div class="form-group mt-3">
+                        <input type="text" name="pers_email" class=" form-control pers_email" placeholder="Email" required>
+                    </div>
+                    <div class="modal-footer mt-3">
+                        <input type="hidden" name="pers_idreg" class="pers_idreg" required>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" data-bs-target="#my-modal" aria-label="Close"></button>
+                        <button type="submit" class="btn btn-primary">Actualizar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+{{!-- Modal delete --}}
+<form id="add-row-form" action="/personasDelete" method="post">
+    <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Eliminar Datos</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" data-bs-target="#my-modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <strong>¿Estás seguro que desea eliminar este registro?</strong>
+            </div>
+            <div class="modal-footer">
+            <input type="hidden" name="pers_idreg" class="form-control pers_idreg2" required>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" data-bs-target="#my-modal" aria-label="Close"></button>
+                <button type="submit" class="btn btn-success">Eliminar</button>
+            </div>
+                </div>
+        </div>
+    </div>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="/assets/jquery-3.3.1.js"></script>
+
+<script>
+$(document).ready(function(){
+    //Mostrar datos al modal para editar registro
+    $('#mytable').on('click', '.edit', function(){
+        let pers_idreg = $(this).data('id');
+        let pers_nombre = $(this).data('pers_nombre');
+        let pers_apellido = $(this).data('pers_apellido');
+        let pers_dni = $(this).data('pers_dni');
+        let pers_email = $(this).data('pers_email');
+        $('#EditModal').modal('show');
+        $('.pers_nombre').val(pers_nombre);
+        $('.pers_apellido').val(pers_apellido);
+        $('.pers_dni').val(pers_dni);
+        $('.pers_email').val(pers_email);
+        $('.pers_idreg').val(pers_idreg);
+    })
+    // Modal DELETE     
+    $('#mytable').on('click', '.delete', function(){
+        let pers_idreg = $(this).data('id');
+        $('#DeleteModal').modal('show');
+        $('.pers_idreg2').val(pers_idreg);
+    })
+})
+</script>

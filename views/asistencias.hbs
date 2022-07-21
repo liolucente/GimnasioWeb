@@ -1,0 +1,27 @@
+<div class="container">
+    <div class="text-center m-5">
+        <h2>Lista de asistencias para el día de hoy</h2>
+    </div>
+    <table class="table table-striped" id="mytable">
+        <thead>
+            <tr>
+                <th>Disciplina</th>
+                <th>Profesor</th>
+                <th>Hora Desde</th>
+                <th>Afiliado</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each results}}
+            <tr>
+                <td> {{ disciplina}}</td>
+                <td> {{ profe_nombre}}</td>
+                <td> {{ asist_horaDesde}}</td>
+                <td> {{ afiliado}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+    </div>
+</div>
+</div>
